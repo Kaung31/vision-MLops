@@ -10,9 +10,14 @@
 *.mov
 *.mkv
 *.webm
-# raw/processed datasets live under DVC, never in git
-/data/
-/datasets/
+# Dataset archives live under DVC: the `data/raw/*.dvc` pointer files ARE tracked,
+# but the archives themselves are cached by DVC and ignored via DVC's own per-target
+# .gitignore. These extension rules are a belt-and-suspenders guard so a raw archive
+# can never slip into git even before `dvc add` runs.
+*.zip
+*.tar
+*.tar.gz
+*.tgz
 
 # Python
 __pycache__/

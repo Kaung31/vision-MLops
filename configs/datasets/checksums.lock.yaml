@@ -1,0 +1,5 @@
+# Auto-managed by src/data/download.py — pinned SHA256 per dataset archive.
+aau-rainsnow: c8c6f114a229762e41ee66c7b8757e438025c93997179874f46c829df925f0a6
+mio-tcd-localization: 0801d0ee34e7fb211945cd5ef836551efadac3a1ec876b126608ec5fbe7fab64
+ua-detrac-images: ae4317b2a81ccf8bebc78fa2bdbbc5ec2720b745e0305746d9aa12d40127c32d
+ua-detrac-train-annotations-xml: 1cf9a783442ce8b531fafa043f243e5b1b6075fd98a0f02fdc95dbfb0081ada1

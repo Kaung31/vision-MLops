@@ -113,8 +113,7 @@ def _fetch(archive: dict[str, Any], dest_dir: Path) -> Path:
     return dest
 
 
-def process_dataset(cfg_path: Path, locks: dict[str, str | None]) -> None:
-    cfg: Any = yaml.safe_load(cfg_path.read_text())
+def process_dataset(cfg: dict[str, Any], locks: dict[str, str | None]) -> None:
     name = cfg["name"]
     dest_dir = DATA_ROOT / name
     print(f"== {name} ({cfg.get('role', '?')}) ==")
@@ -154,15 +153,31 @@ def main(argv: list[str] | None = None) -> int:
     else:
         configs = _dataset_configs()
 
+    failed_optional: list[str] = []
     for cfg_path in configs:
-        if args.skip_stretch:
-            cfg: Any = yaml.safe_load(cfg_path.read_text())
-            if cfg.get("role") == "ungated-stretch":
-                print(f"[skip] {cfg['name']}: ungated-stretch (--skip-stretch)")
+        cfg: dict[str, Any] = yaml.safe_load(cfg_path.read_text())
+        role = cfg.get("role")
+        if args.skip_stretch and role == "ungated-stretch":
+            print(f"[skip] {cfg['name']}: ungated-stretch (--skip-stretch)")
+            continue
+        try:
+            process_dataset(cfg, locks)
+        except (subprocess.CalledProcessError, OSError, ChecksumMismatch) as exc:
+            # An ungated-stretch set (e.g. VisDrone) never gates anything and is only
+            # consumed by the Phase 2 harness; a flaky third-party mirror must not fail
+            # the whole provenance run. Core datasets still hard-fail.
+            if role == "ungated-stretch":
+                print(
+                    f"[warn] {cfg['name']}: optional stretch dataset unavailable — skipped ({exc})"
+                )
+                failed_optional.append(str(cfg["name"]))
                 continue
-        process_dataset(cfg_path, locks)
+            raise
 
-    print("All requested datasets fetched and checksum-verified.")
+    if failed_optional:
+        print(f"Core datasets verified. Deferred optional stretch: {', '.join(failed_optional)}")
+    else:
+        print("All requested datasets fetched and checksum-verified.")
     return 0
 
 

@@ -1,0 +1,6 @@
+outs:
+- md5: 8e5708b5f7140c98baa14c0517b1dd39.dir
+  size: 9921371183
+  nfiles: 2
+  hash: md5
+  path: ua-detrac

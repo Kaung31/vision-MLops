@@ -54,6 +54,15 @@ substituting BMD-45 with an ADR. Availability was checked on 2026-07-10.
   direct/`gdown` HTTP (MIO-TCD, UA-DETRAC annotations, VisDrone). `kaggle` + `gdown`
   live in the uv `data` dependency group; CI does not install them.
 - SHA256 values are pinned at Phase 0 Step D (first real download) and committed.
+- **VisDrone (stretch) is deferred.** On 2026-07-10 Google Drive refused automated
+  download of the VisDrone-DET archives (gdown "cannot retrieve file url" / 24-hour
+  quota page) — a well-known VisDrone issue. Because it is ungated and only consumed
+  by the Phase 2 harness, `download.py` treats ungated-stretch fetch failures as
+  non-fatal (warn + continue) and `raw-v1` ships without it. It will be re-sourced when
+  Phase 2 needs it (Kaggle mirror, cookies, or manual browser download), then pinned.
+- **No DVC remote yet.** `raw-v1` is tracked in the local DVC cache only; a remote
+  (for team reproduction) is deferred. Clean-machine reproduction currently goes
+  through `download.py` (which reconstructs + checksum-verifies from source).
 - `LICENSES.md` records per-dataset license terms and this provenance chain; **no
   frames are redistributed in the repo** (Law 5).
 

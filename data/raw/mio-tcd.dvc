@@ -1,0 +1,6 @@
+outs:
+- md5: 7e85f45f5b2bb5ce4282e0104c9e1c8a.dir
+  size: 3739303424
+  nfiles: 1
+  hash: md5
+  path: mio-tcd
