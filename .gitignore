@@ -1,0 +1,40 @@
+# --- Law 5: NO images/video in git, ever. This is a hard safety net. ---
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+# raw/processed datasets live under DVC, never in git
+/data/
+/datasets/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Tooling caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# ML / experiment artifacts
+mlruns/
+*.pt
+*.onnx
+*.engine
+
+# DVC caches (pointers .dvc files ARE tracked; cache is not)
+/.dvc/cache
+/.dvc/tmp
+
+# OS
+.DS_Store
