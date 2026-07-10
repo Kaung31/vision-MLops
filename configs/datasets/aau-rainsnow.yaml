@@ -1,0 +1,12 @@
+name: aau-rainsnow
+role: gated-eval
+description: >
+  AAU RainSnow Traffic Surveillance — gated cross-dataset eval for rain/snow/night
+  conditions. Instance-level annotations of road users in RGB and thermal video.
+license: "See Kaggle dataset page (Bahnsen & Moeslund, Aalborg University, 2018)."
+provenance: "Kaggle `aalborguniversity/aau-rainsnow` (verified available 2026-07-10)."
+archives:
+  - id: aau-rainsnow
+    method: kaggle
+    source: aalborguniversity/aau-rainsnow
+    filename: aau-rainsnow.zip

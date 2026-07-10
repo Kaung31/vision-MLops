@@ -1,0 +1,12 @@
+name: mio-tcd
+role: gated-eval
+description: >
+  MIO-TCD Localization — gated cross-dataset eval. 137,743 frames with bounding boxes
+  across 11 traffic-object categories (mapped to our taxonomy in Phase 1).
+license: "CC BY-NC-SA 4.0 (cite Luo et al. 2018, IEEE TIP)."
+provenance: "Direct from the official host tcd.miovision.com (verified live 2026-07-10)."
+archives:
+  - id: mio-tcd-localization
+    method: http
+    source: "https://tcd.miovision.com/static/dataset/MIO-TCD-Localization.tar"
+    filename: MIO-TCD-Localization.tar

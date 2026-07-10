@@ -1,0 +1,21 @@
+name: visdrone
+role: ungated-stretch
+description: >
+  VisDrone2019-DET — ungated stretch eval only. Aerial (drone) viewpoint is a near-
+  different task, so it is REPORTED but NEVER gates promotion. Object-detection image
+  task: train (6,471) / val (548) / test-dev (1,610) images.
+license: "VisDrone dataset terms — academic/research use (cite Zhu et al.)."
+provenance: "Official VisDrone GitHub (github.com/VisDrone/VisDrone-Dataset) Google Drive links."
+archives:
+  - id: visdrone-det-train
+    method: gdrive
+    source: "1a2oHjcEcwXP8oUF95qiwrqzACb2YlUhn"
+    filename: VisDrone2019-DET-train.zip
+  - id: visdrone-det-val
+    method: gdrive
+    source: "1bxK5zgLn0_L8x276eKkuYA_FzwCIjb59"
+    filename: VisDrone2019-DET-val.zip
+  - id: visdrone-det-test-dev
+    method: gdrive
+    source: "1PFdW_VFSCfZ_sTSZAGjQdifF_Xd5mf0V"
+    filename: VisDrone2019-DET-test-dev.zip

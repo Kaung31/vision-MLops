@@ -1,0 +1,23 @@
+name: ua-detrac
+role: primary
+description: >
+  UA-DETRAC — primary train/val/test source. Only the 60 training sequences have
+  public XML annotations (ignore regions + weather + vehicle attributes); the test
+  annotations were withheld in the original benchmark, so the labeled working set is
+  the ~84k-frame / ~24-location train split. Frames and annotations come from two
+  sources because no single live mirror carries both (see ADR 0001).
+license: "Non-commercial research use (original UA-DETRAC terms)."
+provenance: >
+  Frames: Kaggle community mirror `bratjay/ua-detrac-orig`, itself sourced from the
+  original author site https://sites.google.com/view/daweidu/projects/ua-detrac
+  (official RIT/Albany hosting is dead). Annotations: the original author's Google
+  Drive release (DETRAC-Train_Annotations-XML.zip).
+archives:
+  - id: ua-detrac-images
+    method: kaggle
+    source: bratjay/ua-detrac-orig
+    filename: ua-detrac-orig.zip
+  - id: ua-detrac-train-annotations-xml
+    method: gdrive
+    source: "12xJc8S0Z7lYaAadsi2CoSK3WqH2OkUBu"
+    filename: DETRAC-Train_Annotations-XML.zip

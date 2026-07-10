@@ -21,6 +21,8 @@ dev = [
 ]
 data = [
     "dvc>=3.55",
+    "kaggle>=1.6",
+    "gdown>=5.2",
 ]
 
 [tool.ruff]
