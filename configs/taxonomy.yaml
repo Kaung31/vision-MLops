@@ -1,0 +1,89 @@
+# Canonical taxonomy — the SINGLE source of truth for class IDs.
+# No class ID is hardcoded anywhere else in the repo; every dataset's native labels
+# route through the per-dataset tables below via src/data/taxonomy.py.
+#
+# Routing verbs (a native class must appear under exactly ONE of them):
+#   map     native class -> canonical class name
+#   ignore  don't-care: NOT a training target AND excluded from false-positive
+#           counting in eval (treated like an ignore-region)
+#   exclude dropped entirely (a genuinely different object we neither detect nor score)
+#
+# Any native class NOT listed here fails loud (UnknownNativeClass) at conversion time —
+# nothing is ever silently dropped. See ADR 0002 for the rationale behind each call.
+
+canonical:
+  - {id: 0, name: car}
+  - {id: 1, name: bus}
+  - {id: 2, name: van_truck}
+
+datasets:
+
+  # UA-DETRAC — native `vehicle_type` string in the XML <attribute> tags.
+  # `others` audited (median box area between van and bus, 0.62% of boxes, scattered
+  # across 27/60 seqs, nothing small) -> truck-like large vehicles -> merged into
+  # van_truck with van (a standalone `others` class would be too small to evaluate).
+  ua-detrac:
+    map:
+      car: car
+      bus: bus
+      van: van_truck
+      others: van_truck
+    ignore: []
+    exclude: []
+
+  # MIO-TCD Localization — native class string in gt_*.csv column 2 (11 classes).
+  mio-tcd:
+    map:
+      car: car
+      bus: bus
+      pickup_truck: van_truck
+      work_van: van_truck
+      single_unit_truck: van_truck
+      articulated_truck: van_truck
+    ignore:
+      # `motorized_vehicle` is MIO-TCD's ambiguous catch-all, used when the annotator
+      # could not determine the specific vehicle type. Ignoring it (don't-care) means a
+      # correct car/van_truck detection landing on one is NOT scored as a false positive
+      # on this gated eval set; excluding it instead would let the model hallucinate
+      # there for free. Ignore is the honest choice. (ADR 0002)
+      - motorized_vehicle
+    exclude:
+      - pedestrian
+      - bicycle
+      - motorcycle
+      - non-motorized_vehicle
+
+  # AAU RainSnow — COCO category IDs in aauRainSnow-{rgb,thermal}.json. Only 6 of the
+  # 80 COCO categories are actually annotated. Converted (video->frames, masks->bbox)
+  # as a frozen eval set in Phase 2; keys are integer COCO ids.
+  aau-rainsnow:
+    status: phase2-eval-set
+    map:
+      3: car        # COCO car
+      6: bus        # COCO bus
+      8: van_truck  # COCO truck (COCO has no 'van')
+    ignore: []
+    exclude:
+      - 1  # person
+      - 2  # bicycle
+      - 4  # motorbike
+
+  # VisDrone-DET — native `object_category` integer (0-11) in the annotation .txt.
+  # Deferred/ungated stretch; keys are integer category ids.
+  visdrone:
+    status: deferred-stretch
+    map:
+      4: car        # car
+      5: van_truck  # van
+      6: van_truck  # truck
+      9: bus        # bus
+    ignore:
+      - 0   # ignored regions  } VisDrone's own eval protocol excludes both
+      - 11  # others           } categories 0 and 11 from scoring
+    exclude:
+      - 1   # pedestrian
+      - 2   # people
+      - 3   # bicycle
+      - 7   # tricycle
+      - 8   # awning-tricycle
+      - 10  # motor
