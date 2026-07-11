@@ -1,0 +1,20 @@
+# Split design (ADR 0006). Assignment is at the CAMERA-GROUP level (ADR 0005): a whole
+# camera (all its clips) goes to exactly one split, so no camera straddles train and eval.
+# Deterministic (seed) and weather-constrained. Counts are in GROUPS (of 27); train is the
+# remainder. Tunable — regenerate configs/splits.yaml with `python -m src.data.split`.
+seed: 1337
+
+proportions: # fraction of total SEQUENCES per split; whole groups approximate these
+  train: 0.58
+  prod_holdout: 0.20
+  val: 0.12
+  test: 0.10
+
+constraints:
+  # each split listed here must contain at least this many groups of each weather, or the
+  # splitter fails loud. Rain is scarce (only 4 rain groups exist), so this is enforced,
+  # not left to chance — the harness weather slices and the Phase 7 drift playlist depend
+  # on test and prod-holdout actually containing night and rain cameras.
+  min_weather_groups:
+    prod_holdout: {night: 1, rainy: 1}
+    test: {night: 1, rainy: 1}
