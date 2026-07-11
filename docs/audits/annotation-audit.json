@@ -1,0 +1,984 @@
+{
+  "aggregate": {
+    "sequences": 60,
+    "frames": 82085,
+    "boxes_before": 598281,
+    "boxes_after": 598274,
+    "removed_duplicates": 7,
+    "cross_class_overlaps": 1,
+    "iou_threshold": 0.9,
+    "image_size": [
+      960,
+      540
+    ]
+  },
+  "sequences": [
+    {
+      "sequence": "MVI_20011",
+      "weather": "sunny",
+      "frames": 664,
+      "boxes_before": 7655,
+      "boxes_after": 7655,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 7053,
+        "van": 296,
+        "others": 211,
+        "bus": 95
+      },
+      "ignore_region_count": 7,
+      "ignore_area_fraction": 0.15512
+    },
+    {
+      "sequence": "MVI_20012",
+      "weather": "sunny",
+      "frames": 936,
+      "boxes_before": 8608,
+      "boxes_after": 8608,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 6481,
+        "van": 790,
+        "bus": 1337
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.12908
+    },
+    {
+      "sequence": "MVI_20032",
+      "weather": "sunny",
+      "frames": 437,
+      "boxes_before": 1657,
+      "boxes_after": 1657,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 1657
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.1188
+    },
+    {
+      "sequence": "MVI_20033",
+      "weather": "sunny",
+      "frames": 784,
+      "boxes_before": 5274,
+      "boxes_after": 5274,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4188,
+        "van": 759,
+        "bus": 327
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.14347
+    },
+    {
+      "sequence": "MVI_20034",
+      "weather": "sunny",
+      "frames": 800,
+      "boxes_before": 9934,
+      "boxes_after": 9934,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 8073,
+        "bus": 1373,
+        "van": 488
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.13489
+    },
+    {
+      "sequence": "MVI_20035",
+      "weather": "sunny",
+      "frames": 800,
+      "boxes_before": 11855,
+      "boxes_after": 11855,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 10396,
+        "van": 1459
+      },
+      "ignore_region_count": 7,
+      "ignore_area_fraction": 0.13761
+    },
+    {
+      "sequence": "MVI_20051",
+      "weather": "sunny",
+      "frames": 906,
+      "boxes_before": 8934,
+      "boxes_after": 8934,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "van": 290,
+        "car": 7738,
+        "bus": 906
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.12784
+    },
+    {
+      "sequence": "MVI_20052",
+      "weather": "sunny",
+      "frames": 694,
+      "boxes_before": 8359,
+      "boxes_after": 8359,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 6982,
+        "bus": 694,
+        "van": 683
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.12294
+    },
+    {
+      "sequence": "MVI_20061",
+      "weather": "sunny",
+      "frames": 800,
+      "boxes_before": 9256,
+      "boxes_after": 9256,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 7348,
+        "van": 1035,
+        "bus": 873
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.20678
+    },
+    {
+      "sequence": "MVI_20062",
+      "weather": "sunny",
+      "frames": 800,
+      "boxes_before": 4462,
+      "boxes_after": 4462,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 3049,
+        "van": 725,
+        "others": 187,
+        "bus": 501
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.13048
+    },
+    {
+      "sequence": "MVI_20063",
+      "weather": "sunny",
+      "frames": 800,
+      "boxes_before": 6392,
+      "boxes_after": 6392,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4789,
+        "bus": 771,
+        "van": 712,
+        "others": 120
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.10048
+    },
+    {
+      "sequence": "MVI_20064",
+      "weather": "sunny",
+      "frames": 800,
+      "boxes_before": 14184,
+      "boxes_after": 14179,
+      "removed_duplicates": 5,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 13473,
+        "van": 465,
+        "bus": 241
+      },
+      "ignore_region_count": 9,
+      "ignore_area_fraction": 0.09402
+    },
+    {
+      "sequence": "MVI_20065",
+      "weather": "sunny",
+      "frames": 1200,
+      "boxes_before": 17156,
+      "boxes_after": 17156,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 14205,
+        "bus": 1252,
+        "van": 1699
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.17351
+    },
+    {
+      "sequence": "MVI_39761",
+      "weather": "night",
+      "frames": 1323,
+      "boxes_before": 3718,
+      "boxes_after": 3718,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 3316,
+        "bus": 402
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.06805
+    },
+    {
+      "sequence": "MVI_39771",
+      "weather": "night",
+      "frames": 570,
+      "boxes_before": 3605,
+      "boxes_after": 3605,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 2933,
+        "bus": 511,
+        "van": 161
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.06146
+    },
+    {
+      "sequence": "MVI_39781",
+      "weather": "night",
+      "frames": 1861,
+      "boxes_before": 7647,
+      "boxes_after": 7647,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4707,
+        "van": 91,
+        "bus": 2628,
+        "others": 221
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.10704
+    },
+    {
+      "sequence": "MVI_39801",
+      "weather": "night",
+      "frames": 885,
+      "boxes_before": 4853,
+      "boxes_after": 4853,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4828,
+        "others": 25
+      },
+      "ignore_region_count": 7,
+      "ignore_area_fraction": 0.07554
+    },
+    {
+      "sequence": "MVI_39811",
+      "weather": "night",
+      "frames": 500,
+      "boxes_before": 599,
+      "boxes_after": 599,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 599
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.08153
+    },
+    {
+      "sequence": "MVI_39821",
+      "weather": "night",
+      "frames": 880,
+      "boxes_before": 4195,
+      "boxes_after": 4195,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 3405,
+        "van": 609,
+        "bus": 181
+      },
+      "ignore_region_count": 10,
+      "ignore_area_fraction": 0.07992
+    },
+    {
+      "sequence": "MVI_39851",
+      "weather": "night",
+      "frames": 1286,
+      "boxes_before": 5126,
+      "boxes_after": 5126,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4007,
+        "bus": 777,
+        "van": 342
+      },
+      "ignore_region_count": 4,
+      "ignore_area_fraction": 0.06013
+    },
+    {
+      "sequence": "MVI_39861",
+      "weather": "night",
+      "frames": 745,
+      "boxes_before": 2394,
+      "boxes_after": 2394,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 2298,
+        "bus": 96
+      },
+      "ignore_region_count": 4,
+      "ignore_area_fraction": 0.04837
+    },
+    {
+      "sequence": "MVI_39931",
+      "weather": "cloudy",
+      "frames": 1082,
+      "boxes_before": 3931,
+      "boxes_after": 3931,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 3495,
+        "bus": 436
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.03614
+    },
+    {
+      "sequence": "MVI_40131",
+      "weather": "cloudy",
+      "frames": 1645,
+      "boxes_before": 15324,
+      "boxes_after": 15324,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 12117,
+        "van": 969,
+        "bus": 2238
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.1397
+    },
+    {
+      "sequence": "MVI_40141",
+      "weather": "cloudy",
+      "frames": 1600,
+      "boxes_before": 6222,
+      "boxes_after": 6222,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4916,
+        "van": 1306
+      },
+      "ignore_region_count": 7,
+      "ignore_area_fraction": 0.1181
+    },
+    {
+      "sequence": "MVI_40152",
+      "weather": "cloudy",
+      "frames": 1746,
+      "boxes_before": 5612,
+      "boxes_after": 5612,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4599,
+        "van": 631,
+        "others": 126,
+        "bus": 256
+      },
+      "ignore_region_count": 6,
+      "ignore_area_fraction": 0.10664
+    },
+    {
+      "sequence": "MVI_40161",
+      "weather": "cloudy",
+      "frames": 1490,
+      "boxes_before": 6625,
+      "boxes_after": 6625,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "bus": 847,
+        "car": 4803,
+        "van": 975
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.19576
+    },
+    {
+      "sequence": "MVI_40162",
+      "weather": "cloudy",
+      "frames": 1726,
+      "boxes_before": 11261,
+      "boxes_after": 11261,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 9380,
+        "bus": 1427,
+        "van": 454
+      },
+      "ignore_region_count": 8,
+      "ignore_area_fraction": 0.14271
+    },
+    {
+      "sequence": "MVI_40171",
+      "weather": "cloudy",
+      "frames": 1150,
+      "boxes_before": 8928,
+      "boxes_after": 8928,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 7084,
+        "bus": 1697,
+        "van": 147
+      },
+      "ignore_region_count": 1,
+      "ignore_area_fraction": 0.03115
+    },
+    {
+      "sequence": "MVI_40172",
+      "weather": "cloudy",
+      "frames": 2635,
+      "boxes_before": 18142,
+      "boxes_after": 18142,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "bus": 626,
+        "van": 644,
+        "car": 16671,
+        "others": 201
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.05473
+    },
+    {
+      "sequence": "MVI_40181",
+      "weather": "cloudy",
+      "frames": 1700,
+      "boxes_before": 7124,
+      "boxes_after": 7124,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4261,
+        "bus": 2350,
+        "van": 417,
+        "others": 96
+      },
+      "ignore_region_count": 0,
+      "ignore_area_fraction": 0.0
+    },
+    {
+      "sequence": "MVI_40191",
+      "weather": "cloudy",
+      "frames": 2495,
+      "boxes_before": 38401,
+      "boxes_after": 38401,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 33647,
+        "van": 4633,
+        "others": 121
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.06859
+    },
+    {
+      "sequence": "MVI_40192",
+      "weather": "cloudy",
+      "frames": 2195,
+      "boxes_before": 28183,
+      "boxes_after": 28183,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 23573,
+        "van": 4097,
+        "others": 167,
+        "bus": 346
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.07398
+    },
+    {
+      "sequence": "MVI_40201",
+      "weather": "cloudy",
+      "frames": 925,
+      "boxes_before": 10925,
+      "boxes_after": 10925,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 10141,
+        "van": 784
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.05863
+    },
+    {
+      "sequence": "MVI_40204",
+      "weather": "cloudy",
+      "frames": 1225,
+      "boxes_before": 22428,
+      "boxes_after": 22428,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 19387,
+        "van": 2774,
+        "bus": 267
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.01365
+    },
+    {
+      "sequence": "MVI_40211",
+      "weather": "cloudy",
+      "frames": 1923,
+      "boxes_before": 6892,
+      "boxes_after": 6892,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 5792,
+        "van": 977,
+        "others": 31,
+        "bus": 92
+      },
+      "ignore_region_count": 0,
+      "ignore_area_fraction": 0.0
+    },
+    {
+      "sequence": "MVI_40212",
+      "weather": "cloudy",
+      "frames": 1690,
+      "boxes_before": 7879,
+      "boxes_after": 7879,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 6800,
+        "van": 870,
+        "bus": 188,
+        "others": 21
+      },
+      "ignore_region_count": 0,
+      "ignore_area_fraction": 0.0
+    },
+    {
+      "sequence": "MVI_40213",
+      "weather": "cloudy",
+      "frames": 1782,
+      "boxes_before": 7702,
+      "boxes_after": 7702,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 6301,
+        "van": 1124,
+        "others": 144,
+        "bus": 133
+      },
+      "ignore_region_count": 0,
+      "ignore_area_fraction": 0.0
+    },
+    {
+      "sequence": "MVI_40241",
+      "weather": "cloudy",
+      "frames": 2320,
+      "boxes_before": 21347,
+      "boxes_after": 21347,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 18502,
+        "van": 2596,
+        "others": 178,
+        "bus": 71
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.07668
+    },
+    {
+      "sequence": "MVI_40243",
+      "weather": "cloudy",
+      "frames": 1265,
+      "boxes_before": 10548,
+      "boxes_after": 10548,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 9047,
+        "van": 1259,
+        "bus": 171,
+        "others": 71
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.13554
+    },
+    {
+      "sequence": "MVI_40244",
+      "weather": "cloudy",
+      "frames": 1345,
+      "boxes_before": 8811,
+      "boxes_after": 8811,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 7885,
+        "van": 804,
+        "bus": 122
+      },
+      "ignore_region_count": 4,
+      "ignore_area_fraction": 0.17087
+    },
+    {
+      "sequence": "MVI_40732",
+      "weather": "night",
+      "frames": 2120,
+      "boxes_before": 11512,
+      "boxes_after": 11512,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "bus": 730,
+        "car": 10154,
+        "others": 352,
+        "van": 276
+      },
+      "ignore_region_count": 0,
+      "ignore_area_fraction": 0.0
+    },
+    {
+      "sequence": "MVI_40751",
+      "weather": "night",
+      "frames": 1145,
+      "boxes_before": 7386,
+      "boxes_after": 7386,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "van": 41,
+        "car": 5418,
+        "bus": 1836,
+        "others": 91
+      },
+      "ignore_region_count": 1,
+      "ignore_area_fraction": 0.00896
+    },
+    {
+      "sequence": "MVI_40752",
+      "weather": "night",
+      "frames": 2025,
+      "boxes_before": 16852,
+      "boxes_after": 16850,
+      "removed_duplicates": 2,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 14527,
+        "bus": 479,
+        "van": 1647,
+        "others": 197
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.10877
+    },
+    {
+      "sequence": "MVI_40871",
+      "weather": "rainy",
+      "frames": 1720,
+      "boxes_before": 36625,
+      "boxes_after": 36625,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 29634,
+        "van": 5271,
+        "bus": 1720
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.2454
+    },
+    {
+      "sequence": "MVI_40962",
+      "weather": "night",
+      "frames": 1875,
+      "boxes_before": 7580,
+      "boxes_after": 7580,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 7009,
+        "bus": 96,
+        "van": 475
+      },
+      "ignore_region_count": 5,
+      "ignore_area_fraction": 0.13715
+    },
+    {
+      "sequence": "MVI_40963",
+      "weather": "night",
+      "frames": 1820,
+      "boxes_before": 11639,
+      "boxes_after": 11639,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 9906,
+        "van": 1007,
+        "bus": 726
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.01975
+    },
+    {
+      "sequence": "MVI_40981",
+      "weather": "night",
+      "frames": 1995,
+      "boxes_before": 10349,
+      "boxes_after": 10349,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 9248,
+        "van": 990,
+        "bus": 111
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.03918
+    },
+    {
+      "sequence": "MVI_40991",
+      "weather": "night",
+      "frames": 1667,
+      "boxes_before": 4482,
+      "boxes_after": 4482,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4482
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.08231
+    },
+    {
+      "sequence": "MVI_40992",
+      "weather": "night",
+      "frames": 2122,
+      "boxes_before": 5062,
+      "boxes_after": 5062,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 4926,
+        "van": 136
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.10322
+    },
+    {
+      "sequence": "MVI_41063",
+      "weather": "sunny",
+      "frames": 1505,
+      "boxes_before": 10048,
+      "boxes_after": 10048,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 8447,
+        "van": 1338,
+        "bus": 76,
+        "others": 187
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.09237
+    },
+    {
+      "sequence": "MVI_41073",
+      "weather": "sunny",
+      "frames": 1825,
+      "boxes_before": 10295,
+      "boxes_after": 10295,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 1,
+      "class_histogram": {
+        "car": 9143,
+        "van": 1041,
+        "others": 111
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.05053
+    },
+    {
+      "sequence": "MVI_63521",
+      "weather": "rainy",
+      "frames": 2055,
+      "boxes_before": 15088,
+      "boxes_after": 15088,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 11806,
+        "bus": 2099,
+        "van": 962,
+        "others": 221
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.0217
+    },
+    {
+      "sequence": "MVI_63525",
+      "weather": "rainy",
+      "frames": 985,
+      "boxes_before": 3470,
+      "boxes_after": 3470,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 2097,
+        "bus": 1161,
+        "van": 212
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.00949
+    },
+    {
+      "sequence": "MVI_63544",
+      "weather": "rainy",
+      "frames": 956,
+      "boxes_before": 1963,
+      "boxes_after": 1963,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "van": 318,
+        "car": 1524,
+        "bus": 121
+      },
+      "ignore_region_count": 9,
+      "ignore_area_fraction": 0.04806
+    },
+    {
+      "sequence": "MVI_63552",
+      "weather": "rainy",
+      "frames": 1150,
+      "boxes_before": 7113,
+      "boxes_after": 7113,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 5482,
+        "van": 1540,
+        "others": 91
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.10517
+    },
+    {
+      "sequence": "MVI_63553",
+      "weather": "rainy",
+      "frames": 1405,
+      "boxes_before": 10775,
+      "boxes_after": 10775,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "van": 1338,
+        "car": 9208,
+        "others": 62,
+        "bus": 167
+      },
+      "ignore_region_count": 2,
+      "ignore_area_fraction": 0.0282
+    },
+    {
+      "sequence": "MVI_63554",
+      "weather": "rainy",
+      "frames": 1445,
+      "boxes_before": 9847,
+      "boxes_after": 9847,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 8359,
+        "van": 1457,
+        "others": 31
+      },
+      "ignore_region_count": 1,
+      "ignore_area_fraction": 0.01464
+    },
+    {
+      "sequence": "MVI_63561",
+      "weather": "rainy",
+      "frames": 1285,
+      "boxes_before": 9803,
+      "boxes_after": 9803,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 8578,
+        "others": 218,
+        "van": 1007
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.06035
+    },
+    {
+      "sequence": "MVI_63562",
+      "weather": "rainy",
+      "frames": 1185,
+      "boxes_before": 6680,
+      "boxes_after": 6680,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "car": 5650,
+        "van": 877,
+        "others": 87,
+        "bus": 66
+      },
+      "ignore_region_count": 4,
+      "ignore_area_fraction": 0.05509
+    },
+    {
+      "sequence": "MVI_63563",
+      "weather": "rainy",
+      "frames": 1390,
+      "boxes_before": 9564,
+      "boxes_after": 9564,
+      "removed_duplicates": 0,
+      "cross_class_overlaps": 0,
+      "class_histogram": {
+        "van": 1053,
+        "car": 8322,
+        "others": 158,
+        "bus": 31
+      },
+      "ignore_region_count": 3,
+      "ignore_area_fraction": 0.01779
+    }
+  ]
+}

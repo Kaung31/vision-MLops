@@ -6,13 +6,18 @@ import json
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from src.data.hygiene import (
     COORD_CONVENTION,
     SCHEMA_VERSION,
     IgnoreBox,
+    audit_sequence,
     black_fill,
+    count_cross_class_overlaps,
+    dedup_frame,
     export_ignore_regions,
+    iou,
     parse_ignore_regions,
 )
 
@@ -90,3 +95,72 @@ def test_export_header_is_self_describing(tmp_path: Path) -> None:
     assert data["image_width"] == 960
     assert data["image_height"] == 540
     assert data["ignore_regions"] == [{"left": 2.0, "top": 3.0, "width": 4.0, "height": 5.0}]
+
+
+# --- dedup + audit ---
+
+FIXTURE_AUDIT = """<?xml version="1.0" encoding="utf-8"?>
+<sequence name="MVI_fix">
+   <sequence_attribute camera_state="stable" sence_weather="cloudy"/>
+   <ignored_region>
+      <box left="0" top="0" width="10" height="10"/>
+   </ignored_region>
+   <frame num="1"><target_list>
+      <target id="1">
+         <box left="0" top="0" width="10" height="10"/><attribute vehicle_type="car"/>
+      </target>
+      <target id="2">
+         <box left="0.3" top="0.2" width="10" height="10"/><attribute vehicle_type="car"/>
+      </target>
+      <target id="3">
+         <box left="100" top="100" width="20" height="10"/><attribute vehicle_type="bus"/>
+      </target>
+   </target_list></frame>
+   <frame num="2"><target_list>
+      <target id="4">
+         <box left="50" top="50" width="10" height="10"/><attribute vehicle_type="van"/>
+      </target>
+   </target_list></frame>
+</sequence>
+"""
+
+
+def test_iou_known_answer() -> None:
+    assert iou((0, 0, 10, 10), (5, 0, 10, 10)) == pytest.approx(1 / 3)  # inter 50 / union 150
+    assert iou((0, 0, 10, 10), (100, 100, 10, 10)) == 0.0  # disjoint
+
+
+def test_dedup_removes_same_class_near_duplicate() -> None:
+    frame = [("car", (0.0, 0.0, 10.0, 10.0)), ("car", (0.3, 0.2, 10.0, 10.0))]  # IoU ~0.906
+    kept, removed = dedup_frame(frame)
+    assert removed == 1
+    assert kept == [("car", (0.0, 0.0, 10.0, 10.0))]
+
+
+def test_dedup_keeps_moderate_overlap_and_cross_class() -> None:
+    frame = [
+        ("car", (0.0, 0.0, 10.0, 10.0)),
+        ("car", (5.0, 0.0, 10.0, 10.0)),  # IoU 0.33 -> distinct, keep
+        ("bus", (0.0, 0.0, 10.0, 10.0)),  # same box, different class -> dedup leaves it
+    ]
+    kept, removed = dedup_frame(frame)
+    assert removed == 0
+    assert len(kept) == 3
+
+
+def test_count_cross_class_overlaps() -> None:
+    frame = [("car", (0.0, 0.0, 10.0, 10.0)), ("bus", (0.0, 0.0, 10.0, 10.0))]
+    assert count_cross_class_overlaps(frame) == 1
+
+
+def test_audit_sequence_pins_counts(tmp_path: Path) -> None:
+    p = _write(tmp_path, "MVI_fix.xml", FIXTURE_AUDIT)
+    a = audit_sequence(p, image_width=200, image_height=200)
+    assert a["frames"] == 2
+    assert a["boxes_before"] == 4
+    assert a["boxes_after"] == 3  # one car near-dup removed
+    assert a["removed_duplicates"] == 1
+    assert a["cross_class_overlaps"] == 0
+    assert a["class_histogram"] == {"car": 1, "bus": 1, "van": 1}
+    assert a["ignore_region_count"] == 1
+    assert a["ignore_area_fraction"] == pytest.approx(100 / 40000)  # 10x10 / 200x200
