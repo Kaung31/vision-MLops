@@ -62,13 +62,12 @@ def _box_to_pixels(b: IgnoreBox, w: int, h: int) -> tuple[int, int, int, int]:
     return x0, y0, x1, y1
 
 
-def parse_ignore_regions(xml_path: Path) -> list[IgnoreBox]:
-    """Return the ignore-region boxes for one DETRAC sequence XML.
+def ignore_regions_of(root: ET.Element) -> list[IgnoreBox]:
+    """Ignore-region boxes from a parsed DETRAC sequence root.
 
-    Returns an EMPTY list when the sequence has no ``<ignored_region>`` element — this is
-    common and must never raise (it is the case most likely to blow up mid-conversion).
+    Returns an EMPTY list when there is no ``<ignored_region>`` element — common, and the
+    case most likely to blow up mid-conversion, so it must never raise.
     """
-    root = ET.parse(xml_path).getroot()
     region = root.find("ignored_region")
     if region is None:
         return []
@@ -83,7 +82,12 @@ def parse_ignore_regions(xml_path: Path) -> list[IgnoreBox]:
     ]
 
 
-def black_fill(image: NDArray[np.uint8], boxes: list[IgnoreBox]) -> NDArray[np.uint8]:
+def parse_ignore_regions(xml_path: Path) -> list[IgnoreBox]:
+    """Ignore-region boxes for one DETRAC sequence XML file (see ``ignore_regions_of``)."""
+    return ignore_regions_of(ET.parse(xml_path).getroot())
+
+
+def black_fill(image: NDArray[Any], boxes: list[IgnoreBox]) -> NDArray[Any]:
     """Return a copy of ``image`` with every ignore box zeroed (black).
 
     Pixel convention is pinned by tests (see ``_box_to_pixels``); under-masking would leak
@@ -98,17 +102,11 @@ def black_fill(image: NDArray[np.uint8], boxes: list[IgnoreBox]) -> NDArray[np.u
     return out
 
 
-def export_ignore_regions(
-    sequence: str,
-    boxes: list[IgnoreBox],
-    image_width: int,
-    image_height: int,
-    out_path: Path,
-) -> None:
-    """Write a self-describing ignore-region JSON for one sequence (guide 2b).
-
-    The header (schema version, coordinate convention, image dimensions) makes the file
-    safe to consume blind in Phase 2 — no out-of-band xywh/xyxy or origin assumptions.
+def ignore_regions_json(
+    sequence: str, boxes: list[IgnoreBox], image_width: int, image_height: int
+) -> str:
+    """Self-describing ignore-region JSON string: schema + coordinate convention + dims,
+    so Phase 2 can consume it blind (no out-of-band xywh/xyxy or origin assumptions).
     """
     payload = {
         "schema_version": SCHEMA_VERSION,
@@ -120,7 +118,18 @@ def export_ignore_regions(
             {"left": b.left, "top": b.top, "width": b.width, "height": b.height} for b in boxes
         ],
     }
-    out_path.write_text(json.dumps(payload, indent=2))
+    return json.dumps(payload, indent=2)
+
+
+def export_ignore_regions(
+    sequence: str,
+    boxes: list[IgnoreBox],
+    image_width: int,
+    image_height: int,
+    out_path: Path,
+) -> None:
+    """Write the self-describing ignore-region JSON for one sequence (guide 2b)."""
+    out_path.write_text(ignore_regions_json(sequence, boxes, image_width, image_height))
 
 
 def iou(a: Box, b: Box) -> float:

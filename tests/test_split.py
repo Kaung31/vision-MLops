@@ -67,6 +67,13 @@ def test_train_is_the_largest_split(groups: Groups, config: dict[str, Any]) -> N
     assert len(manifests["train"]) == max(len(manifests[s]) for s in SPLITS)
 
 
+def test_train_and_val_clips_are_disjoint(groups: Groups, config: dict[str, Any]) -> None:
+    # train and val share the train-v1 directory, so this disjointness is the only thing
+    # keeping val honest as an early-stopping signal (rider on ADR 0006).
+    manifests = build_manifests(groups, assign_groups(groups, config))
+    assert set(manifests["train"]).isdisjoint(manifests["val"])
+
+
 def test_corrupting_a_manifest_trips_the_leakage_guard(
     groups: Groups, config: dict[str, Any]
 ) -> None:

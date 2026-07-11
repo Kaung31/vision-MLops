@@ -55,6 +55,33 @@ production-holdout keeps **full-rate** frames for a realistic Phase 6 streaming 
 - If the Phase 3 learning-curve shows train is data-starved, the proportions are the knob
   (single config change → regenerate).
 
+## Dataset materialization (⑦) and the read-only mechanism
+
+`src/data/convert.py` emits three DVC versions from the manifests:
+
+- **Read-only is a sentinel file, not chmod.** `eval-frozen-v1` and `prod-holdout-v1` each
+  carry a `.readonly` file whose *contents* state why. Every dataset write routes through
+  `datasets.open_dataset_dir(path, "w")`, which refuses a writable handle when the sentinel
+  exists — a new writer cannot forget the check because it cannot get a handle without it.
+  The sentinel survives `dvc pull`/checkout on Colab and the rented box; chmod bits do not.
+  Local chmod is at most a bonus. This is Law 4 as code, not memory.
+- **prod-holdout images are referenced, not duplicated.** Duplicating ~GB of full-rate
+  frames that already sit checksummed in `raw-v1` buys nothing. `prod-holdout-v1` ships
+  sequestered YOLO labels + ignore JSONs + a **content-addressed `frame_manifest.yaml`**
+  that pins the exact archive dirs, the **raw-v1 DVC md5** (`8e5708b5…dir`) so it is
+  anchored to an immutable version rather than "whatever raw-v1 is today", and per-sequence
+  frame counts as a cheap integrity check the Phase 6 producer verifies at startup.
+- **Operational notes.** (1) The producer must be **benchmarked reading from the zip at
+  target rate** (4×25 = ~100 JPEG reads/s) on the rented box — measured, not assumed, since
+  that machine's disk is unknown. (2) If zip random-access ever bottlenecks, the fix is a
+  one-time **extract-to-scratch on the serving box — a runtime cache, not a fourth dataset
+  version.** Nobody should "solve" it by materializing new frames.
+- **val lives in `train-v1`** (standard YOLO `data.yaml` with train+val paths). Law 4
+  protects test and prod-holdout, not val (it is an early-stopping/model-selection signal,
+  never a gated surface). The one guard: a test asserts `train ∩ val = ∅` so sharing a
+  directory never rots into leakage, and `assert_trainable` stays **clip-based**, so "it
+  lives in train-v1" never becomes the test for "gradients may see it."
+
 ## Alternatives rejected
 
 - **Frame-level split:** data leakage (adjacent 25 FPS frames are near-identical) — Law 3.

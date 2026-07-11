@@ -39,6 +39,12 @@ python_version = "3.12"
 strict = true
 files = ["src", "tests"]
 
+# cv2 (opencv, data group only) ships no type stubs and is not installed in CI; convert.py
+# lazy-imports it, so treat it as Any rather than force it into every lint job.
+[[tool.mypy.overrides]]
+module = ["cv2"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
