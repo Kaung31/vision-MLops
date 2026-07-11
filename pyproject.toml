@@ -4,6 +4,7 @@ version = "0.0.0"
 description = "Production-grade vision MLOps platform for vehicle detection (UA-DETRAC + cross-dataset eval)."
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "numpy>=1.26",
     "pyyaml>=6.0",
 ]
 
