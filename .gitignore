@@ -18,6 +18,8 @@
 *.tar
 *.tar.gz
 *.tgz
+# derivation scratch that contains dataset imagery (median backgrounds, contact sheets)
+/data/camera_work/
 
 # Python
 __pycache__/

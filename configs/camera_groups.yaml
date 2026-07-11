@@ -1,0 +1,86 @@
+# Hand-audited UA-DETRAC camera groups (ADR 0005). 'location' for Law 3 == group.
+# `sequences` are the human audit result; `weathers` is auto-derived (union over
+# members) from DETRAC sequence attributes, used by split.py's coverage constraints.
+# Regenerate weathers with scripts (grouping is manual, never auto-overwrite it).
+groups:
+  cam_wideave_complex:
+    weathers: [sunny]
+    sequences: [MVI_20011, MVI_20012, MVI_20032, MVI_20033, MVI_20034, MVI_20035]
+  cam_redbanner_a:
+    weathers: [sunny]
+    sequences: [MVI_20051, MVI_20052]
+  cam_redbarrier:
+    weathers: [sunny]
+    sequences: [MVI_20061, MVI_20062, MVI_20063, MVI_20064, MVI_20065]
+  cam_treemed:
+    weathers: [night]
+    sequences: [MVI_39761, MVI_39771]
+  cam_bldgroad:
+    weathers: [night]
+    sequences: [MVI_39801, MVI_39811, MVI_39821]
+  cam_fence5:
+    weathers: [cloudy]
+    sequences: [MVI_40152, MVI_40161, MVI_40162, MVI_40171, MVI_40172]
+  cam_greenmed:
+    weathers: [cloudy]
+    sequences: [MVI_40191, MVI_40192]
+  cam_hedge_a:
+    weathers: [cloudy]
+    sequences: [MVI_40201, MVI_40204]
+  cam_hedge_b:
+    weathers: [cloudy]
+    sequences: [MVI_40211, MVI_40212, MVI_40213]
+  cam_hedge_c:
+    weathers: [cloudy]
+    sequences: [MVI_40241, MVI_40243, MVI_40244]
+  cam_billboard:
+    weathers: [night]
+    sequences: [MVI_40732, MVI_40751]
+  cam_nightblue:
+    weathers: [night]
+    sequences: [MVI_40962, MVI_40963]
+  cam_pillar_r:
+    weathers: [night]
+    sequences: [MVI_40991, MVI_40992]
+  cam_metalmed:
+    weathers: [cloudy, rainy]
+    sequences: [MVI_40131, MVI_63521, MVI_63525]
+  cam_hedgewall:
+    weathers: [rainy]
+    sequences: [MVI_63552, MVI_63553, MVI_63554, MVI_63561, MVI_63562, MVI_63563]
+  cam_39781:
+    weathers: [night]
+    sequences: [MVI_39781]
+  cam_39851:
+    weathers: [night]
+    sequences: [MVI_39851]
+  cam_39861:
+    weathers: [night]
+    sequences: [MVI_39861]
+  cam_39931:
+    weathers: [cloudy]
+    sequences: [MVI_39931]
+  cam_40141:
+    weathers: [cloudy]
+    sequences: [MVI_40141]
+  cam_40181:
+    weathers: [cloudy]
+    sequences: [MVI_40181]
+  cam_40752:
+    weathers: [night]
+    sequences: [MVI_40752]
+  cam_40871:
+    weathers: [rainy]
+    sequences: [MVI_40871]
+  cam_40981:
+    weathers: [night]
+    sequences: [MVI_40981]
+  cam_41063:
+    weathers: [sunny]
+    sequences: [MVI_41063]
+  cam_41073:
+    weathers: [sunny]
+    sequences: [MVI_41073]
+  cam_63544:
+    weathers: [rainy]
+    sequences: [MVI_63544]
