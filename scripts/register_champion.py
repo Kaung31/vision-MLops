@@ -93,7 +93,17 @@ def main(argv: list[str] | None = None) -> int:
         c.log_artifact(run.info.run_id, str(path), artifact_path="harness-report")
     print(f"attached harness report from {args.report_dir}")
 
-    mv = mlflow.register_model(f"runs:/{run.info.run_id}/weights/best.pt", MODEL_NAME)
+    # mlflow 3.x: fluent register_model(runs:/...) requires a LoggedModel entity; best.pt is a
+    # plain artifact, so register via the client API from the artifact URI directly.
+    from mlflow.exceptions import RestException
+
+    try:
+        c.create_registered_model(MODEL_NAME)
+    except RestException:
+        pass  # already exists
+    mv = c.create_model_version(
+        MODEL_NAME, source=f"{run.info.artifact_uri}/weights/best.pt", run_id=run.info.run_id
+    )
     c.set_registered_model_alias(MODEL_NAME, args.alias, mv.version)
     print(f"registered {MODEL_NAME} v{mv.version}  ->  @{args.alias}")
     print(f"serving loads: models:/{MODEL_NAME}@{args.alias}")
