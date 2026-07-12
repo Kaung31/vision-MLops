@@ -11,9 +11,12 @@ budget:
   gpu_hours: 8.0       # HARD cap, Kaung-approved 2026-07-12 (T4 ≈ 2 CU/hr → ≈16 CU)
   ledger: runs/tune-ledger.json   # cumulative spend, appended after every session
 
-trials: 20             # iteration cap (guide: 15-25)
+# Worst-case arithmetic the wrapper enforces: trials x epochs x 1.5 min/epoch <= budget.
+# 15 x 20 x 1.5min = 7.5h <= 8h. (The first committed combo, 20x25=12.5h, was correctly
+# REFUSED by the guard on launch — kept as the live budget-enforcement demonstration.)
+trials: 15             # iteration cap (guide: 15-25)
 grace_period: 8        # ASHA: min epochs before a trial can be killed
-epochs: 25             # per-trial max — realistic, not toy (short tuning runs transfer poorly)
+epochs: 20             # per-trial max — realistic, not toy (short tuning runs transfer poorly)
 gpu_per_trial: 1
 
 # Search space: the high-leverage knobs only (guide 4.1). Ranges bracket ultralytics defaults.
