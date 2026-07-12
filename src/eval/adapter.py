@@ -83,7 +83,7 @@ class YoloDetector:
         iou: float = DEFAULT_IOU,
         imgsz: int = DEFAULT_IMGSZ,
     ) -> None:
-        from ultralytics import YOLO  # type: ignore[attr-defined]  # lazy: keep module torch-free
+        from ultralytics import YOLO  # lazy: keep module torch-free
 
         self.model: Any = YOLO(str(weights))  # untyped boundary — treat results as Any
         self.class_map = build_class_map(dict(self.model.names))

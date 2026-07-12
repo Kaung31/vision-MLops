@@ -119,7 +119,7 @@ def build_space(spec: dict[str, Any]) -> dict[str, Any]:
 
 def tune_session(args: argparse.Namespace) -> dict[str, Any]:
     import mlflow
-    from ultralytics import YOLO  # type: ignore[attr-defined]
+    from ultralytics import YOLO
 
     cfg: dict[str, Any] = yaml.safe_load(Path(args.config).read_text())
     data_dir = Path(args.data)

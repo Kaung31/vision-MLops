@@ -117,14 +117,14 @@ def parse_results_csv(text: str) -> dict[str, list[float]]:
 
 def train(args: argparse.Namespace) -> dict[str, Any]:
     import mlflow  # lazy: train group only
-    from ultralytics import YOLO  # type: ignore[attr-defined]  # lazy: eval group only
+    from ultralytics import YOLO  # lazy: eval group only
     from ultralytics import settings as ul_settings
 
     cfg: dict[str, Any] = yaml.safe_load(Path(args.config).read_text())
     data_dir = Path(args.data)
     guard_training_data(data_dir)
     # this script is the single explicit logger
-    ul_settings.update({"mlflow": False})  # type: ignore[no-untyped-call]
+    ul_settings.update({"mlflow": False})
 
     epochs = args.epochs or int(cfg["epochs"])
     fraction = args.fraction if args.fraction is not None else float(cfg.get("fraction", 1.0))

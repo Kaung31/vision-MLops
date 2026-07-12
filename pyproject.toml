@@ -45,12 +45,14 @@ python_version = "3.12"
 strict = true
 files = ["src", "tests"]
 
-# cv2 (opencv), ultralytics, and mlflow ship no/partial type stubs and are not installed in CI;
-# all are lazy-imported behind the `data`/`eval`/`train` groups, so treat them as Any rather than
-# force torch into every lint job.
+# Heavy lazy deps (cv2/ultralytics/mlflow/ray) live behind opt-in groups and are absent in CI.
+# follow_imports=skip treats them as Any EVEN WHEN INSTALLED, so mypy sees the identical world
+# locally (packages present) and in CI (absent) — otherwise strict's warn_unused_ignores flags
+# ignore-comments as unused in whichever env the package is missing from.
 [[tool.mypy.overrides]]
-module = ["cv2", "ultralytics", "mlflow", "mlflow.*", "ray", "ray.*"]
+module = ["cv2", "cv2.*", "ultralytics", "ultralytics.*", "mlflow", "mlflow.*", "ray", "ray.*"]
 ignore_missing_imports = true
+follow_imports = "skip"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
