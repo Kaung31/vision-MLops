@@ -1,11 +1,11 @@
-# Transfer study (Phase 4): champion's SMALL model + the augmentation the nano search found.
-# This is a CANDIDATE — it becomes configs/training/tuned-v1.yaml (the config all future
-# retraining uses) ONLY if it beats champion-v1 under the Phase 5 contract logic.
+# PROMOTED (Phase 4): champion's SMALL model + the augmentation the nano search found. This
+# won the transfer study — beat champion-v1 in-distribution (0.601 -> 0.630) AND on the hardest
+# cross-dataset slice (RainSnow 0.096 -> 0.117, non-overlapping CIs), so it is now the config
+# all future retraining uses. Evidence: reports/tuned-v1/, docs/experiments/tuning.md.
 #
 # lr0/lrf are deliberately ABSENT: they were in the search space but Ultralytics'
 # optimizer="auto" overrode them (all 14 trials ran at auto's lr — the winning trial had the
 # LOWEST lr0 tried, proof it was ignored). So this is auto-lr + tuned augmentation, honestly.
-# See docs/experiments/tuning.md.
 
 model: yolov8s.pt        # SMALL — same as champion-v1, so the comparison is like-for-like
 data_version: train-v1

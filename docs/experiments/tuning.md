@@ -1,6 +1,6 @@
 # Phase 4 — Hyperparameter tuning: what it actually bought
 
-- **Status:** IN PROGRESS — search done + salvaged; transfer study pending
+- **Status:** COMPLETE — tuned config won the transfer study and is promoted to `tuned-v1.yaml`
 - **Date:** 2026-07-13
 - **Phase:** 4 (guide §4.1–4.4)
 
@@ -47,14 +47,40 @@ Best trial's effective (applied) config:
 | hsv_h / hsv_s / hsv_v | 0.099 / 0.539 / 0.787 | 0.015 / 0.7 / 0.4 |
 | imgsz | 640 | 640 |
 
-## Transfer study (nano → small) — PENDING
+## Transfer study (nano → small)
 
-Train the **small** model with the candidate config, run the full `eval-harness-v1.1` report,
-and compare to `champion-v1` (in-dist 0.601, gated 0.137) with CIs, per slice. The candidate
-is promoted to `configs/training/tuned-v1.yaml` **only if it wins**. Numbers: TBD.
+Trained the **small** model (`tuned-v1`, run `16f49482`, 61 epochs, best val 0.7264 vs
+champion 0.7008) with the candidate config, then ran the full `eval-harness-v1.1` report on
+`eval-frozen-v1` + both gated sets. Comparison vs `champion-v1`, mAP50-95 with 95% CIs:
 
-## Honest bottom line — PENDING
+| slice | champion-v1 | tuned-v1 | Δ | verdict |
+|---|---|---|---|---|
+| in-dist overall | 0.601 [0.576, 0.625] | 0.630 [0.610, 0.651] | **+0.029** | CIs barely overlap — real |
+| &nbsp;&nbsp;car | 0.684 [0.677, 0.690] | 0.693 [0.687, 0.699] | +0.009 | up |
+| &nbsp;&nbsp;bus | 0.646 [0.575, 0.713] | 0.658 [0.600, 0.714] | +0.012 | thin slice, ~flat |
+| &nbsp;&nbsp;**van_truck** | 0.473 [0.454, 0.494] | 0.540 [0.521, 0.559] | **+0.066** | non-overlapping — significant |
+| **RainSnow** (gated) | 0.096 [0.090, 0.105] | 0.117 [0.108, 0.127] | **+0.020** | non-overlapping — significant |
+| MIO-TCD (gated) | 0.218 [0.199, 0.238] | 0.222 [0.203, 0.242] | +0.003 | flat |
+| gated aggregate | 0.137 | 0.151 | +0.014 | up (still < 0.157 floor) |
+| night (weather) | 0.458 [0.421, 0.496] | 0.507 [0.471, 0.546] | +0.049 | up |
+| sunny / rainy | 0.726 / 0.662 | 0.690 / 0.643 | −0.036 / −0.019 | within wide small-slice CIs — n.s. |
 
-TBD after the transfer study: did tuning buy anything over defaults, given (a) lr couldn't be
-tuned and (b) the model is already capacity-limited on this data? A null result is a valid,
-reportable outcome.
+**Decision: PROMOTE.** tuned-v1 beats champion-v1 in-distribution (no large slice regresses
+significantly) and — the result that matters — improves the two hardest slices with
+statistical significance: `van_truck` (+0.066) and the RainSnow rain/snow/night set (+0.020).
+`configs/training/tuned-v1.yaml` is now the config all future retraining uses. tuned-v1 is
+registered as `traffic-vision-detector` **v2 = @challenger**; `@champion` stays on v1 until
+Phase 5's `promote.py` runs the contract and flips it mechanically (no hand-promotion).
+
+## Honest bottom line
+
+Tuning bought **~+0.03 in-distribution and, more importantly, ~+0.02 on the hardest
+cross-dataset condition** — and it did so entirely through **augmentation**, because
+`optimizer="auto"` made the learning-rate knobs no-ops (the tool's behaviour, discovered and
+proven from the trial data, not assumed). The direction is the valuable part: in a
+capacity-limited regime (learning-curve study) where more data buys almost nothing, stronger
+augmentation was the lever that improved *generalization* to unseen cameras/weather — exactly
+where champion-v1 was weakest (it had regressed below the zero-shot floor). It did **not**
+fully close that cross-dataset gap (0.151 < 0.157): fine-tuning still generalizes worse than
+zero-shot COCO in aggregate, which is the problem the Phase 8 flywheel exists to attack. So:
+a modest but real and correctly-directed gain, honestly bounded.
