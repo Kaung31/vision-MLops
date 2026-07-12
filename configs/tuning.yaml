@@ -1,0 +1,31 @@
+# Phase 4 tuning config — versioned artifact (guide 4.1). The wrapper (src/train/tune.py)
+# enforces the HARD GPU-hour budget in code: it refuses to launch a session when the ledger
+# shows the budget spent, and refuses projections that would overrun it. Changing the budget
+# is a config commit, not a code edit (audit trail).
+
+model: yolov8n.pt      # tune the NANO model (guide 4.2); transfer study trains small with the winner
+data_version: train-v1
+seed: 0
+
+budget:
+  gpu_hours: 8.0       # HARD cap, Kaung-approved 2026-07-12 (T4 ≈ 2 CU/hr → ≈16 CU)
+  ledger: runs/tune-ledger.json   # cumulative spend, appended after every session
+
+trials: 20             # iteration cap (guide: 15-25)
+grace_period: 8        # ASHA: min epochs before a trial can be killed
+epochs: 25             # per-trial max — realistic, not toy (short tuning runs transfer poorly)
+gpu_per_trial: 1
+
+# Search space: the high-leverage knobs only (guide 4.1). Ranges bracket ultralytics defaults.
+# dist: loguniform -> tune.loguniform, uniform -> tune.uniform, choice -> tune.choice
+space:
+  lr0:          {dist: loguniform, low: 1.0e-4, high: 1.0e-2}   # default 0.01
+  lrf:          {dist: loguniform, low: 0.005,  high: 0.2}      # default 0.01
+  weight_decay: {dist: loguniform, low: 1.0e-5, high: 1.0e-3}   # default 5e-4
+  warmup_epochs: {dist: uniform,   low: 0.0,    high: 5.0}      # default 3.0
+  mosaic:       {dist: uniform,    low: 0.0,    high: 1.0}      # default 1.0
+  mixup:        {dist: uniform,    low: 0.0,    high: 0.3}      # default 0.0
+  hsv_h:        {dist: uniform,    low: 0.0,    high: 0.1}      # default 0.015
+  hsv_s:        {dist: uniform,    low: 0.0,    high: 0.9}      # default 0.7
+  hsv_v:        {dist: uniform,    low: 0.0,    high: 0.9}      # default 0.4
+  imgsz:        {dist: choice, values: [512, 640]}              # default 640

@@ -49,7 +49,7 @@ files = ["src", "tests"]
 # all are lazy-imported behind the `data`/`eval`/`train` groups, so treat them as Any rather than
 # force torch into every lint job.
 [[tool.mypy.overrides]]
-module = ["cv2", "ultralytics", "mlflow", "mlflow.*"]
+module = ["cv2", "ultralytics", "mlflow", "mlflow.*", "ray", "ray.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
