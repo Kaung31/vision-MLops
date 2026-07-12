@@ -1,3 +1,5 @@
 /train-v1
 /eval-frozen-v1
 /prod-holdout-v1
+/mio-tcd-eval-v1
+/rainsnow-eval-v1

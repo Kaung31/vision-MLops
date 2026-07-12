@@ -1,0 +1,6 @@
+outs:
+- md5: 47b06325876d88887216fd8de5ffcd68.dir
+  size: 51393982
+  nfiles: 2002
+  hash: md5
+  path: mio-tcd-eval-v1

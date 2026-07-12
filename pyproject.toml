@@ -26,6 +26,9 @@ data = [
     "gdown>=5.2",
     "opencv-python-headless>=4.9",
 ]
+eval = [
+    "ultralytics>=8.3",
+]
 
 [tool.ruff]
 line-length = 100
@@ -39,10 +42,11 @@ python_version = "3.12"
 strict = true
 files = ["src", "tests"]
 
-# cv2 (opencv, data group only) ships no type stubs and is not installed in CI; convert.py
-# lazy-imports it, so treat it as Any rather than force it into every lint job.
+# cv2 (opencv) and ultralytics ship no/partial type stubs and are not installed in CI; both are
+# lazy-imported behind the `data`/`eval` groups, so treat them as Any rather than force torch
+# into every lint job.
 [[tool.mypy.overrides]]
-module = ["cv2"]
+module = ["cv2", "ultralytics"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

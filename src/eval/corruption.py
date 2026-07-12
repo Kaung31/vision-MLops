@@ -6,8 +6,9 @@ STABLE hash of (image id, corruption, severity) so a given corrupted image is bi
 on any machine, in any iteration order (rider 2). "brightness shift" is split into the two
 signed, non-symmetric directions (rider 1) — darkening is the production-relevant one
 (day->night drift). Additive pipeline is pinned float32 -> add -> clip[0,255] -> round ->
-uint8. Severity ranges below are PROVISIONAL: calibrated once on the zero-shot COCO-YOLO
-floor, then frozen in the ADR (rider 3).
+uint8. Severity ranges below are FROZEN: calibrated on the zero-shot COCO-YOLO floor
+(monotone, non-degenerate curves) and frozen as part of eval-harness-v1. See ADR 0008;
+changing any range now requires a new harness tag + historical re-run.
 
 Cost note (rider 4): a full sweep is ~ (corruptions x severities) extra eval passes, so it
 belongs in the report command and the promotion pipeline (C4 champion vs challenger), NOT
@@ -28,7 +29,7 @@ from src.eval.harness import DEFAULT_IOA_THR, IOU_THRESHOLDS, Detections, Ground
 U8 = NDArray[np.uint8]
 
 MAX_SEVERITY = 5
-# PROVISIONAL ranges (index by severity-1). Calibrated on the zero-shot floor then frozen.
+# FROZEN ranges (index by severity-1). Calibrated on the zero-shot floor — see ADR 0008.
 BLUR_SIGMA = (0.5, 1.0, 2.0, 3.0, 4.0)
 NOISE_SIGMA = (5.0, 10.0, 20.0, 40.0, 60.0)
 JPEG_QUALITY = (80, 60, 40, 25, 15)

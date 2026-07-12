@@ -1,0 +1,6 @@
+outs:
+- md5: c23d4445759c448c73367a7cc82f4b81.dir
+  size: 878490372
+  nfiles: 2200
+  hash: md5
+  path: rainsnow-eval-v1
