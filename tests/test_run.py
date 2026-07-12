@@ -82,3 +82,19 @@ def test_guard_on_the_real_train_v1_if_present() -> None:
     if not (real / "labels").exists():
         pytest.skip("train-v1 not materialized on this machine")
     guard_training_data(real)  # the actual pool must always pass its own guard
+
+
+def test_merge_overrides_tuned_plus_lr() -> None:
+    from src.train.run import merge_overrides
+
+    cfg = {"overrides": {"mosaic": 0.98, "mixup": 0.3}}
+    # tuned knobs pass through; a broken-run --lr0 override wins last
+    assert merge_overrides(cfg, {}) == {"mosaic": 0.98, "mixup": 0.3}
+    assert merge_overrides(cfg, {"lr0": 1.0, "optimizer": "SGD"}) == {
+        "mosaic": 0.98,
+        "mixup": 0.3,
+        "lr0": 1.0,
+        "optimizer": "SGD",
+    }
+    # no overrides block -> empty (base config unaffected)
+    assert merge_overrides({}, {}) == {}

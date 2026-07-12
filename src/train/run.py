@@ -88,6 +88,15 @@ def guard_training_data(data_dir: Path, splits_yaml: Path = SPLITS_YAML) -> None
         raise FrozenDataError(f"training pool contains eval/prod-holdout sequences: {leaked}")
 
 
+def merge_overrides(cfg: dict[str, Any], lr_over: dict[str, Any]) -> dict[str, Any]:
+    """Extra train() kwargs from the config's `overrides:` block (tuned hypers) + any --lr0.
+
+    The broken-run --lr0 override wins last so the integration test can force a bad LR even
+    over a tuned config.
+    """
+    return {**(cfg.get("overrides") or {}), **lr_over}
+
+
 def parse_results_csv(text: str) -> dict[str, list[float]]:
     """Ultralytics results.csv -> per-epoch total train loss, total val loss, val mAP50-95.
 
@@ -168,21 +177,28 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
         resolved_yaml.parent.mkdir(parents=True, exist_ok=True)
         resolved_yaml.write_text(yaml.safe_dump(resolved, sort_keys=False))
 
+        # a tuned config carries an `overrides:` block (e.g. tuned augmentation) that wins over
+        # the base kwargs; logged as hp_* params so the run records exactly what was applied.
+        overrides = merge_overrides(cfg, lr_over)
+        mlflow.log_params({f"hp_{k}": v for k, v in overrides.items()})
+
         model = YOLO(model_name)
         results = model.train(
-            data=str(resolved_yaml),
-            epochs=epochs,
-            imgsz=int(cfg["imgsz"]),
-            batch=int(cfg["batch"]),
-            patience=int(cfg["patience"]),
-            seed=seed,
-            fraction=fraction,
-            device=args.device,
-            project=str(REPO_ROOT / "runs"),
-            name=run_name,
-            exist_ok=True,
-            verbose=False,
-            **lr_over,
+            **{
+                "data": str(resolved_yaml),
+                "epochs": epochs,
+                "imgsz": int(cfg["imgsz"]),
+                "batch": int(cfg["batch"]),
+                "patience": int(cfg["patience"]),
+                "seed": seed,
+                "fraction": fraction,
+                "device": args.device,
+                "project": str(REPO_ROOT / "runs"),
+                "name": run_name,
+                "exist_ok": True,
+                "verbose": False,
+                **overrides,
+            }
         )
         run_dir = Path(results.save_dir)
 
