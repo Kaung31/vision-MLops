@@ -1,0 +1,14 @@
+eval-harness-v1.1 equivalence proof — zero-shot floor re-run (2026-07-12)
+
+Change under test: adapter.build_class_map extended to accept canonical class names
+(fine-tuned checkpoints); COCO-name fallback unchanged. See ADR 0008 addendum.
+
+Method: full report re-run (yolov8n.pt, --suite all, --device mps, seed 0) under the
+v1.1 adapter; JSON compared field-by-field against the frozen v1 report, excluding
+only the provenance block (timestamp/commit differ by construction).
+
+Result: IDENTICAL — every metric (all suites, slices, CIs, corruption curves) equal.
+
+sha256(report.json, frozen v1): 469d98b08d8ddda28758ac80254437b0021de507467866ede58dc85148842a1d
+sha256(report.json, v1.1 re-run): dd79f8e2e5476c55c441f012b42551c47ab2eaafa0aa911ceb5d9befff50ebe1
+(hashes differ only via the provenance block; metric payloads compared equal)

@@ -129,6 +129,10 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
     epochs = args.epochs or int(cfg["epochs"])
     fraction = args.fraction if args.fraction is not None else float(cfg.get("fraction", 1.0))
     seed = args.seed if args.seed is not None else int(cfg["seed"])
+    model_name = args.model or str(cfg["model"])
+    # ultralytics optimizer="auto" silently overrides lr0; an explicit lr0 needs an explicit
+    # optimizer or the broken-run (LR-100x) integration test would pass vacuously.
+    lr_over: dict[str, Any] = {"lr0": args.lr0, "optimizer": "SGD"} if args.lr0 is not None else {}
     run_name = args.run_name or f"{Path(args.config).stem}-f{fraction:g}-s{seed}-{int(time.time())}"
 
     if args.tracking_uri:
@@ -144,14 +148,14 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
                 "dataset_md5": dataset_md5(data_dir.parent / f"{data_dir.name}.dvc"),
                 "git_commit": git_commit(),
                 "seed": seed,
-                "model": cfg["model"],
+                "model": model_name,
                 "imgsz": cfg["imgsz"],
                 "epochs": epochs,
                 "batch": cfg["batch"],
                 "patience": cfg["patience"],
                 "fraction": fraction,
                 "device": args.device,
-                **({"lr0": args.lr0} if args.lr0 is not None else {}),
+                **lr_over,
             }
         )
 
@@ -164,7 +168,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
         resolved_yaml.parent.mkdir(parents=True, exist_ok=True)
         resolved_yaml.write_text(yaml.safe_dump(resolved, sort_keys=False))
 
-        model = YOLO(cfg["model"])
+        model = YOLO(model_name)
         results = model.train(
             data=str(resolved_yaml),
             epochs=epochs,
@@ -178,7 +182,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
             name=run_name,
             exist_ok=True,
             verbose=False,
-            **({"lr0": args.lr0} if args.lr0 is not None else {}),
+            **lr_over,
         )
         run_dir = Path(results.save_dir)
 
@@ -230,7 +234,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
         return summary
 
 
-def main(argv: list[str] | None = None) -> int:
+def main_summary(argv: list[str] | None = None) -> dict[str, Any]:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default=str(REPO_ROOT / "configs" / "training" / "base.yaml"))
     parser.add_argument("--data", default=str(DEFAULT_DATA))
@@ -242,8 +246,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fraction", type=float, default=None, help="override (learning curve)")
     parser.add_argument("--seed", type=int, default=None, help="override config seed")
     parser.add_argument("--lr0", type=float, default=None, help="override (broken-run tests)")
+    parser.add_argument("--model", default=None, help="override config model (broken-run tests)")
     args = parser.parse_args(argv)
-    summary = train(args)
+    return train(args)
+
+
+def main(argv: list[str] | None = None) -> int:
+    summary = main_summary(argv)
     return 1 if summary["diagnosis"]["suspect"] else 0
 
 

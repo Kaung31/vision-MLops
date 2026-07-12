@@ -20,6 +20,14 @@ def test_build_class_map_only_scored_classes() -> None:
     assert 0 not in cmap and 1 not in cmap and 3 not in cmap
 
 
+def test_build_class_map_fine_tuned_canonical_names() -> None:
+    # a checkpoint fine-tuned on train-v1 exposes OUR names — must map 1:1, van_truck included
+    # (pre-v1.1 this silently dropped van_truck: not a COCO name)
+    ids = canonical_ids()
+    cmap = build_class_map({0: "car", 1: "bus", 2: "van_truck"})
+    assert cmap == {0: ids["car"], 1: ids["bus"], 2: ids["van_truck"]}
+
+
 def test_detections_from_arrays_filters_and_relabels() -> None:
     cmap = build_class_map(COCO_NAMES)
     boxes = np.array([[0, 0, 10, 10], [5, 5, 20, 20], [1, 1, 3, 3]], dtype=np.float32)

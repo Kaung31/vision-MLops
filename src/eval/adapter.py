@@ -43,12 +43,17 @@ def canonical_ids() -> dict[str, int]:
 
 
 def build_class_map(model_names: dict[int, str]) -> dict[int, int]:
-    """Model class index -> canonical id, for the scored classes only (others omitted = dropped)."""
+    """Model class index -> canonical id, for the scored classes only (others omitted = dropped).
+
+    Two model kinds, resolved by NAME: a model fine-tuned on our data already uses canonical
+    names (car/bus/van_truck) — matched first; a zero-shot COCO model uses COCO names —
+    matched via the COCO table (unchanged from the frozen floor report). Anything else drops.
+    """
     ids = canonical_ids()
     return {
-        idx: ids[COCO_TO_CANONICAL_NAME[name]]
+        idx: ids[name if name in ids else COCO_TO_CANONICAL_NAME[name]]
         for idx, name in model_names.items()
-        if name in COCO_TO_CANONICAL_NAME
+        if name in ids or name in COCO_TO_CANONICAL_NAME
     }
 
 

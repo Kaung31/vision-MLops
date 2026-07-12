@@ -76,3 +76,16 @@ it. The frozen ranges (index by severity−1):
   desired shape before any model comparison — the exact failure Law 2 guards against.
 - **Drop the two shallow axes.** Rejected: their flatness is a real, reportable robustness result;
   removing them hides a true measurement.
+
+## Addendum — `eval-harness-v1.1` (2026-07-12, Phase 3)
+
+`adapter.py`'s class map only knew COCO names; a checkpoint fine-tuned on train-v1 exposes
+canonical names (`car`/`bus`/`van_truck`), and `van_truck` — not a COCO name — was silently
+dropped, which would have zeroed that class in any fine-tuned model's report. Fixed before
+first fine-tuned use: canonical names match first, the COCO table is an unchanged fallback.
+
+Freeze protocol followed: eval code changed → new tag **`eval-harness-v1.1`** + historical
+report re-run. The zero-shot floor was re-run in full under v1.1 and matched the frozen v1
+report on every metric (COCO-name mapping is byte-identical; the fix touches only names v1
+never scored). No frozen definition (AP math, ignore precedence, slices, corruption ranges)
+changed. Equality evidence: `reports/zero-shot-floor/v1.1-equivalence.txt`.
