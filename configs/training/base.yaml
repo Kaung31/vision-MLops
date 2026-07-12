@@ -1,0 +1,21 @@
+# Baseline training config (Phase 3) — a versioned artifact. Every real run cites this file +
+# its content hash + the resolved dataset md5 + git commit + seed (Law 6). The baseline uses
+# DEFAULT Ultralytics hyperparameters, so this pins ONLY what reproducibility and routing need;
+# lr/momentum/augmentation ride Ultralytics defaults until Phase 4 produces tuned-v1.yaml.
+
+model: yolov8s.pt        # YOLO-small, COCO-pretrained init (the baseline size, guide Phase 3.4)
+data_version: train-v1   # DVC-tagged dataset; run.py logs its resolved .dvc md5
+imgsz: 640
+epochs: 100
+batch: 16
+patience: 20             # early stopping on val mAP50-95 plateau; checkpoint the BEST epoch
+seed: 0
+fraction: 1.0            # learning-curve study overrides this to 0.25 / 0.5 / 0.75 / 1.0
+
+# Post-run diagnosis thresholds (src/train/diagnose.py). Tunable; changing them is a config
+# change with an audit trail, not a code edit.
+diagnose:
+  overfit_rebound: 0.20    # val loss rising >20% above its own minimum while train loss still falls
+  min_learn_frac: 0.05     # train loss must drop >=5% from epoch 0, else "barely learned"
+  window: 5                # trailing epochs used for plateau/trend checks
+  floor_map50_95: 0.381    # eval-harness-v1 zero-shot COCO-YOLO floor (reports/zero-shot-floor)

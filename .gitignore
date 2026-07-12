@@ -35,6 +35,8 @@ venv/
 
 # ML / experiment artifacts
 mlruns/
+mlflow.db
+runs/
 *.pt
 *.onnx
 *.engine
