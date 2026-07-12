@@ -33,6 +33,7 @@ MLFLOW_URI_DEFAULT = "https://dagshub.com/Kaung31/vision-MLops.mlflow"
 WORKDIR_DEFAULT = "/content/vision-MLops"
 # torch/torchvision are preinstalled on Colab GPU VMs (CUDA-matched) — do NOT reinstall them.
 PIP_PACKAGES = ["ultralytics", "mlflow>=2.14", "dvc[http]>=3.55", "pyyaml"]
+TUNE_PACKAGES = ["ray[tune]", "optuna"]  # only for --entry src.train.tune
 
 
 def _masked(cmd: list[str]) -> str:
@@ -77,6 +78,7 @@ def main() -> int:
     p.add_argument("--mlflow-uri", default=MLFLOW_URI_DEFAULT)
     p.add_argument("--workdir", default=WORKDIR_DEFAULT)
     p.add_argument("--dvc-target", default="data/processed/train-v1.dvc")
+    p.add_argument("--entry", default="src.train.run", help="module to exec (src.train.tune)")
     args, train_argv = p.parse_known_args(sys.argv[1:])
 
     # 1. code
@@ -87,7 +89,8 @@ def main() -> int:
         sh(["git", "clone", "--depth", "1", "--branch", args.ref, args.repo, args.workdir])
 
     # 2. deps (torch stays as Colab shipped it)
-    sh([sys.executable, "-m", "pip", "install", "-q", *PIP_PACKAGES])
+    packages = PIP_PACKAGES + (TUNE_PACKAGES if args.entry.endswith(".tune") else [])
+    sh([sys.executable, "-m", "pip", "install", "-q", *packages])
 
     # 3. data — dvc pull the pinned train-v1 from DagsHub (creds are --local, so set them here)
     for k, v in (("auth", "basic"), ("user", args.user), ("password", args.token)):
@@ -102,9 +105,9 @@ def main() -> int:
         "MLFLOW_TRACKING_PASSWORD": args.token,
         "PYTHONUNBUFFERED": "1",  # epoch lines must arrive live through the relay
     }
-    print(f"[colab-boot] launching training: {' '.join(train_argv)}", flush=True)
+    print(f"[colab-boot] launching {args.entry}: {' '.join(train_argv)}", flush=True)
     return sh(
-        [sys.executable, "-m", "src.train.run", *train_argv],
+        [sys.executable, "-m", args.entry, *train_argv],
         cwd=args.workdir,
         env=env,
         check=False,

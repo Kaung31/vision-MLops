@@ -42,6 +42,20 @@ def test_ledger_roundtrip_accumulates(tmp_path: Path) -> None:
     assert remaining == pytest.approx(6.5)
 
 
+def test_spent_from_runs_sums_metric_across_sessions() -> None:
+    from types import SimpleNamespace
+
+    from src.train.tune import spent_from_runs
+
+    def run(**metrics: float) -> SimpleNamespace:
+        return SimpleNamespace(data=SimpleNamespace(metrics=metrics))
+
+    # two prior sessions + a trial run without the metric (nested runs don't carry it)
+    runs = [run(gpu_seconds=3600.0), run(gpu_seconds=1800.0), run(map50_95=0.5)]
+    assert spent_from_runs(runs) == pytest.approx(5400.0)
+    assert spent_from_runs([]) == 0.0
+
+
 def test_build_space_rejects_unknown_dist() -> None:
     pytest.importorskip("ray")
     from src.train.tune import build_space

@@ -53,6 +53,16 @@ def read_ledger(path: Path) -> dict[str, Any]:
     return {"spent_gpu_seconds": 0.0, "sessions": []}
 
 
+def spent_from_runs(runs: list[Any]) -> float:
+    """Cumulative GPU-seconds from prior tune-session runs' logged metrics.
+
+    MLflow (DagsHub) is the budget's source of truth: the local JSON ledger dies with each
+    ephemeral Colab VM, but every session logs `gpu_seconds` to the tune experiment, so the
+    spend survives and is enforceable from any machine.
+    """
+    return sum(float(r.data.metrics.get("gpu_seconds", 0.0)) for r in runs)
+
+
 def append_session(path: Path, seconds: float, note: str) -> dict[str, Any]:
     led = read_ledger(path)
     led["spent_gpu_seconds"] = float(led["spent_gpu_seconds"]) + seconds
@@ -115,13 +125,16 @@ def tune_session(args: argparse.Namespace) -> dict[str, Any]:
     data_dir = Path(args.data)
     guard_training_data(data_dir)  # Law 4, same guard as training
 
+    if args.tracking_uri:
+        mlflow.set_tracking_uri(args.tracking_uri)
+    exp = mlflow.set_experiment(args.experiment)
+
+    # budget source of truth = MLflow (survives ephemeral VMs); local ledger is a human record
+    prior = mlflow.MlflowClient().search_runs([exp.experiment_id], max_results=500)
+    spent = spent_from_runs(list(prior))
     ledger_path = REPO_ROOT / cfg["budget"]["ledger"]
-    led = read_ledger(ledger_path)
     remaining = check_budget(
-        float(cfg["budget"]["gpu_hours"]),
-        float(led["spent_gpu_seconds"]),
-        int(cfg["trials"]),
-        int(cfg["epochs"]),
+        float(cfg["budget"]["gpu_hours"]), spent, int(cfg["trials"]), int(cfg["epochs"])
     )
     print(f"budget ok: {remaining:.2f} GPU-hours remaining — launching {cfg['trials']} trials")
 
@@ -130,10 +143,6 @@ def tune_session(args: argparse.Namespace) -> dict[str, Any]:
     resolved_yaml = REPO_ROOT / "runs" / "tune-data.yaml"
     resolved_yaml.parent.mkdir(parents=True, exist_ok=True)
     resolved_yaml.write_text(yaml.safe_dump(resolved, sort_keys=False))
-
-    if args.tracking_uri:
-        mlflow.set_tracking_uri(args.tracking_uri)
-    mlflow.set_experiment(args.experiment)
 
     start = time.time()
     model = YOLO(str(cfg["model"]))
@@ -160,9 +169,9 @@ def tune_session(args: argparse.Namespace) -> dict[str, Any]:
                 "git_commit": git_commit(),
                 "trials": cfg["trials"],
                 "epochs_per_trial": cfg["epochs"],
-                "gpu_seconds": round(elapsed),
             }
         )
+        mlflow.log_metric("gpu_seconds", elapsed)  # the budget's durable source of truth
         best_cfg: dict[str, Any] = {}
         best_metric = float("-inf")
         for i, res in enumerate(results):
