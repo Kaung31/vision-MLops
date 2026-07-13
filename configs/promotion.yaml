@@ -1,0 +1,31 @@
+# The promotion contract (Phase 5). A challenger replaces the champion ONLY if every clause
+# passes, each evaluated by eval-harness-v1.1 with bootstrap CIs. There is NO override flag in
+# the code: to override a decision you edit THIS file and commit it — that commit is the audit
+# trail. See ADR 0010.
+
+model_name: traffic-vision-detector
+in_distribution_suite: ua-detrac
+gated_suites: [mio-tcd, rainsnow]
+
+# C1 — in-distribution: not significantly worse (CI-overlap) AND point >= champion - epsilon.
+c1_epsilon: 0.0
+
+# C2 — gated cross-dataset: size-weighted aggregate not worse by more than epsilon, AND no
+# single gated suite drops more than the catastrophic threshold (points of mAP50-95).
+c2_epsilon: 0.0
+c2_catastrophic_drop: 0.05
+
+# C3 — no LARGE slice regresses significantly. A slice with >= min_box_count GT boxes is
+# "large" and can block; smaller slices only warn (their CIs are too wide to trust). Axes:
+# per-class, per-weather, per-camera, per-scale.
+c3_min_box_count: 500
+
+# C4 — corruption robustness: challenger's degradation-curve area (mean mAP50-95 over all
+# corruptions x severities) may be at most this far below the champion's.
+c4_corruption_tolerance: 0.02
+
+# C5 — latency/throughput SLO. STUBBED until Phase 6 wires the real serving stack; passes with
+# a clearly-marked placeholder so the contract is complete but honest.
+c5_slo:
+  status: stubbed
+  note: "SLO not yet measured — placeholder pass until Phase 6 serving stack exists"

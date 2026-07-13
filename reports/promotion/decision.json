@@ -1,0 +1,60 @@
+{
+  "promoted": true,
+  "clauses": [
+    {
+      "name": "C1_in_distribution",
+      "passed": true,
+      "detail": "in-dist mAP50-95 0.630 vs champion 0.601; CI-overlap ok; point >= champion-eps",
+      "numbers": {
+        "champion": {
+          "point": 0.6009879202905629,
+          "ci_low": 0.5764562087376732,
+          "ci_high": 0.6251224460604056
+        },
+        "challenger": {
+          "point": 0.6301693458708414,
+          "ci_low": 0.6095182779101239,
+          "ci_high": 0.6510536924384659
+        }
+      }
+    },
+    {
+      "name": "C2_gated_cross_dataset",
+      "passed": true,
+      "detail": "gated aggregate 0.151 vs champion 0.137; worst single-suite drop 0.000 on none (ok)",
+      "numbers": {
+        "champion_aggregate": 0.1367658539207289,
+        "challenger_aggregate": 0.1514011729525393,
+        "worst_drop": 0.0,
+        "worst_suite": ""
+      }
+    },
+    {
+      "name": "C3_large_slice_regression",
+      "passed": true,
+      "detail": "0 large-slice regression(s); 0 small-slice warning(s)",
+      "numbers": {
+        "blocks": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "C4_corruption",
+      "passed": true,
+      "detail": "corruption AUC 0.584 vs champion 0.533 (tol 0.02)",
+      "numbers": {
+        "champion_auc": 0.5325576164878434,
+        "challenger_auc": 0.5838160919643591
+      }
+    },
+    {
+      "name": "C5_slo",
+      "passed": true,
+      "detail": "STUBBED \u2014 SLO not yet measured \u2014 placeholder pass until Phase 6 serving stack exists",
+      "numbers": {
+        "status": "stubbed"
+      }
+    }
+  ],
+  "warnings": []
+}
